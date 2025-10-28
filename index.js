@@ -25,7 +25,7 @@ console.log(empty.length)
 
 var greetings = "Hello"
 var number = 10
-console.log(greetings+number)
+console.log(greetings + number)
 
 //level 3
 
@@ -33,3 +33,23 @@ var first_name = "Abdullah"
 var last_name = "Umer"
 var space = " "
 console.log(first_name + space + last_name)
+
+const str = "JavaScript";
+const firstChar = str[0];
+const lastChar = str[str.length - 1];
+console.log("First character:", firstChar);
+console.log("Last Character:", lastChar);
+
+var long = "I Love Coding"
+console.log(long.length)
+
+
+var greetings = "Hello"
+var Uni = "World"
+var space = " "
+console.log(greetings + space + Uni)
+console.log(greetings + Uni)
+
+var myAge = "My age is"
+var num18= 18
+console.log(typeof myAge + num18);
