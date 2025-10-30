@@ -51,5 +51,5 @@ console.log(greetings + space + Uni)
 console.log(greetings + Uni)
 
 var myAge = "My age is"
-var num18= 18
+var num18 = 18
 console.log(typeof myAge + num18);
