@@ -222,16 +222,38 @@
 
 
 
-var sentence = prompt("Enter your sentence:");
-var vowels = "aeiouAEIOU";
-var vowelCount = 0;
+// var sentence = prompt("Enter your sentence:");
+// var vowels = "aeiouAEIOU";
+// var vowelCount = 0;
 
-for (var i = 0; i < sentence.length; i++) {
-    var char = sentence[i];
+// for (var i = 0; i < sentence.length; i++) {
+//     var char = sentence[i];
 
-    if (vowels.includes(char)) {
-        vowelCount++;
+//     if (vowels.includes(char)) {
+//         vowelCount++;
+//     }
+// }
+
+// console.log("Total vowels:", vowelCount);
+
+var sentence = prompt("Enter Your World");
+var words = sentence.trim().split(/\s+/);
+
+var longest = "";
+var shortest = words[0];
+
+for (var i = 0; i < words.length; i++) {
+    var currentword = words[i];
+
+    if (currentword.length > longest.length) {
+        longest = currentword
     }
+    if (currentword.length < shortest.length) {
+        shortest = currentword
+    }
+
 }
 
-console.log("Total vowels:", vowelCount);
+console.log("total word:", words.length)
+console.log("longest word:", longest)
+console.log("shortest word:", shortest)
