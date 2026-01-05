@@ -1,58 +1,94 @@
-var input = document.getElementById("todo-input");
-var BTn = document.getElementById("add");
-var list = document.getElementById("list-todo");
+// Select Dom Elements
+const input = document.getElementById('todo-input')
+const addBtn = document.getElementById('add-btn')
+const list = document.getElementById('todo-list')
 
+// Try to load saved todos from localStorage (if any)
+const saved = localStorage.getItem('todos');
+const todos = saved ? JSON.parse(saved) : [];
 
-// saved to local storage
-var saved = localStorage.getItem("items");
-var todo = saved ? JSON.parse(saved) : [];
-
-function savedtodos() {
-    localStorage.setItem('todos', JSON.stringify(todo));
+function saveTodos() {
+    // Save current todos array to localStorage
+    localStorage.setItem('todos', JSON.stringify(todos));
 }
-function createtodonode() {
-    var li = document.createElement('input')
 
-    // checkbox toggle completion
-    var checkbox = document.createElement('li');
+// Create a DOM node for a todo object and append it to the list
+function createTodoNode(todo, index) {
+    const li = document.createElement('li');
+
+    // checkbox to toggle completion
+    const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = !!todo.completed;
-    checkbox.addEventListener("change", function () {
+    checkbox.addEventListener("change", () => {
         todo.completed = checkbox.checked;
 
-        // saved todos 
-        savedtodos()
-    });
+        // TODO: Visual feedback: strike-through when completed
+        textSpan.style.textDecoration = todo.completed ? 'line-through' : "";
+        saveTodos();
+    })
 
-    // text  of todos
-    var textspan = document.createElement('li')
-    textspan.textContent = todos.text;
-    textspan.style.margin = '0 8px';
+    // Text of the todo
+    const textSpan = document.createElement("span");
+    textSpan.textContent = todo.text;
+    textSpan.style.margin = '0 8px';
     if (todo.completed) {
-        textspan.style.textDecoration = 'line-through';
-
-        // double click 
-        textspan.addEventListener("dblclick", function () {
-            var newtext = prompt("edit todo", todo.text);
-            if (newtext !== null)
-                todo.text = newtext.trim()
-            textspan.textContent = todo.text
-            savedtodos();
-        })
-
-        // delete
-        var delbtn = document.createElement("button")
-        delbtn.textContent = ("delete")
-        delbtn.addEventListener('click'function () {
-            todo.splice(index, 1);
-            render();
-            savedtodos();
-        })
+        textSpan.style.textDecoration = 'line-through';
     }
+    // Add double-click event listener to edit todo
+    textSpan.addEventListener("dblclick", () => {
+        const newText = prompt("Edit todo", todo.text);
+        if (newText !== null) {
+            todo.text = newText.trim()
+            textSpan.textContent = todo.text;
+            saveTodos();
+        }
+    })
+
+    // Delete Todo Button 
+    const delBtn = document.createElement('button');
+    delBtn.textContent = "Delete";
+    delBtn.addEventListener('click', () => {
+        todos.splice(index, 1);
+        render();
+        saveTodos();
+    })
+
+    li.appendChild(checkbox);
+    li.appendChild(textSpan);
+    li.appendChild(delBtn);
+    return li
 }
 
-// render the whole todo list 
+// Render the whole todo list from todos array
 function render() {
     list.innerHTML = '';
 
+    // Recreate each item
+    todos.forEach((todo, index) => {
+        const node = createTodoNode(todo, index);
+        list.appendChild(node)
+    });
 }
+
+function addTodo() {
+    const text = input.value.trim();
+    if (!text) {
+        return
+    }
+
+    // Push a new todo object
+    todos.push({ text: text, completed: false });
+    input.value = '';
+    render()
+    saveTodos()
+
+}
+
+addBtn.addEventListener("click", addTodo);
+input.addEventListener('keydown', (e) => {
+    if (e.key == 'Enter') {
+        addTodo();
+    }
+})
+render();
